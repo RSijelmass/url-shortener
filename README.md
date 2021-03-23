@@ -30,7 +30,35 @@ With this, there are a few unknowns and therefore I have taken the  liberty to m
 - When passing a valid URL that is faulty (e.g. a string that is in correct URL format but does not exist), we will store the URL. The application will currently not check the existence or health of these URLs.
 
 ## Run the Application
-~TODO~
+#### Starting the App
+To start the app, you need to run:
+```
+bin/rails server
+```
+
+This will point to `localhost:3000`.
+
+#### Creating a new URL instance
+If you want to create a new URL with a shortened alias, make the request with body:
+```
+Request
+POST http://localhost:3000/url_instances
+
+Body
+{
+    "input_url": <DESIRED_URL_TO_STORE>
+}
+```
+
+This will come back with URL information including your shorthand.
+
+#### Using the shorthand
+If you would like to use a shorthand, this can be done by running the request:
+```
+GET http://localhost:3000/short/<SHORTHAND>
+```
+
+This should redirect you to the longhand URL, if the shorthand has been stored in our database. 
 
 ## Run the Tests
 ~TODO~
