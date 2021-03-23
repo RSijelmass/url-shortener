@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe UrlInstancesController, type: :request do
   let(:valid_url) { "https://someLongHand.com" }
   let(:expected_shorthand) { "someShorthand" }
+  let(:user) { User.create }
   before do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
     UrlParser.stub(:is_valid_url?).and_return(true)
     UrlParser.stub(:create_shorthand).and_return(expected_shorthand)
   end
