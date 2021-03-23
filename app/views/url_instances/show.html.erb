@@ -1,4 +1,8 @@
-Your URL information.
+<h2>Your URL information:</h2>
 
-Longhand URL: <%= @url_instance.longhand %>
-Shorthand URL: <%= @url_instance.shorthand %>
+<p>
+  Longhand URL: <%= @url_instance.longhand %> <br>
+  Shorthand URL: <%= @url_instance.shorthand %>
+</p>
+
+<%= link_to 'All URLs', url_instances_path %>

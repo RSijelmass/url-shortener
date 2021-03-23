@@ -1,0 +1,20 @@
+<h2>Your URL instances:</h2>
+
+<% @url_instances.each do |url_instance| %>
+  <tr>
+    <td><b>URL:</b> <%= url_instance.longhand %></td>
+    <td><b>shorthand:</b> <%= url_instance.shorthand %></td><br>
+  </tr>
+<% end %>
+
+<p>
+  To access any of these URLs through the shorthand, use the endpoint: {{baseUrl}}/short/:shorthand
+</p>
+
+<%= form_for :url_instance, url: url_instances_path do |form| %>
+  <h4>Store a new URL </h4>
+  <p>
+    <%= form.text_field :longhand %><br>
+    <%= form.submit %>
+  </p>
+<% end %>

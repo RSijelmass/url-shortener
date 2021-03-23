@@ -2,6 +2,10 @@ class UrlInstancesController < ApplicationController
   before_action :login_required, except: [:redirect_from_short]
   skip_before_action :verify_authenticity_token
 
+  def index
+    @url_instances = current_user.url_instances
+  end
+
   def show
     @url_instance = UrlInstance.find(params[:id])
   end
@@ -17,7 +21,7 @@ class UrlInstancesController < ApplicationController
   end
 
   def create
-    input_url = params[:input_url]
+    input_url = url_instance_params[:longhand]
 
     unless UrlParser.is_valid_url? input_url
       render body: "Failed to store URL: #{input_url} is not valid", :status => :bad_request
@@ -32,5 +36,11 @@ class UrlInstancesController < ApplicationController
     else
       render body: "Failed to store UrlInstance", :status => :internal_server_error
     end
+  end
+
+  private
+
+  def url_instance_params
+    params.require(:url_instance).permit(:longhand)
   end
 end
