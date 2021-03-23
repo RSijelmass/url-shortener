@@ -1,6 +1,10 @@
 class UrlInstancesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def show
+    @url_instance = UrlInstance.find(params[:id])
+  end
+
   def create
     input_url = params[:input_url]
 
@@ -12,6 +16,10 @@ class UrlInstancesController < ApplicationController
     shorthand_url = UrlParser.create_shorthand
 
     @url_instance = UrlInstance.new(longhand: input_url, shorthand: shorthand_url)
-    @url_instance.save
+    if @url_instance.save
+      redirect_to @url_instance
+    else
+      render body: "Failed to store UrlInstance", :status => :internal_server_error
+    end
   end
 end
