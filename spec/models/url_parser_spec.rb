@@ -37,5 +37,8 @@ RSpec.describe UrlParser do
     it 'will consider the url to be invalid when an empty URL is passed' do
       expect(UrlParser.is_valid_url? invalid_url_empty).to be false
     end
+    it 'will consider the url to be invalid when a nil object is passed' do
+      expect(UrlParser.is_valid_url? nil).to be false
+    end
   end
 end

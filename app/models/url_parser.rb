@@ -1,6 +1,6 @@
 class UrlParser
   def self.is_valid_url?(potential_url)
-    valid = potential_url.match(/\A#{URI::regexp}\z/)
+    valid = potential_url && potential_url.match(/\A#{URI::regexp}\z/)
     !!valid
   end
 

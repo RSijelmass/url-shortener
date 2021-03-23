@@ -28,6 +28,11 @@ RSpec.describe UrlInstancesController, type: :controller do
         post :create, params: { url_instance: { input_url: invalid_url } }
         expect(response).to have_http_status(:bad_request)
       end
+
+      it 'returns an error when no input_url is given' do
+        expect { post :create, params: { url_instance: { } } }.to change(UrlInstance, :count).by(0)
+        expect(response).to have_http_status(:bad_request)
+      end
     end
 
     it 'returns an error when we failed to store the URL' do

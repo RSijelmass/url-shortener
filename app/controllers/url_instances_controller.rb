@@ -1,6 +1,9 @@
 class UrlInstancesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
     input_url = params[:input_url]
+
     unless UrlParser.is_valid_url? input_url
       render body: "Failed to store URL: #{input_url} is not valid", :status => :bad_request
       return
