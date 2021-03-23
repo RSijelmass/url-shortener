@@ -5,6 +5,17 @@ class UrlInstancesController < ApplicationController
     @url_instance = UrlInstance.find(params[:id])
   end
 
+  def redirect_from_short
+    @url_instance = UrlInstance.find_by(shorthand: params[:shorthand])
+    if @url_instance.nil?
+      render body: "No URL available with shorthand #{params[:shorthand]}", :status => :not_found
+      return
+    end
+
+    longhand = @url_instance.longhand
+    redirect_to longhand
+  end
+
   def create
     input_url = params[:input_url]
 
