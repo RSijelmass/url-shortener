@@ -1,5 +1,5 @@
 class UrlInstancesController < ApplicationController
-  before_action :login_required
+  before_action :login_required, except: [:redirect_from_short]
   skip_before_action :verify_authenticity_token
 
   def show
@@ -13,8 +13,7 @@ class UrlInstancesController < ApplicationController
       return
     end
 
-    longhand = @url_instance.longhand
-    redirect_to longhand
+    redirect_to @url_instance.longhand
   end
 
   def create

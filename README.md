@@ -58,7 +58,7 @@ If you would like to use a shorthand, this can be done by running the request:
 GET http://localhost:3000/short/<SHORTHAND>
 ```
 
-This should redirect you to the longhand URL, if the shorthand has been stored in our database. 
+This should redirect you to the longhand URL, if the shorthand has been stored in our database.
 
 ## Run the Tests
 ~TODO~
@@ -75,7 +75,8 @@ Over multiple iterations, I attempt to create a minimal viable product to improv
 - As an anonymous user, I can sign up to the platform
 - As an anonymous user, I can sign in to the platform
 - As a signed in user, I can pass a valid URL and it will return a shortened URL.
-- As an anonymous user, It does not allow me to pass a valid URL and return a shortened URL
+- As an anonymous user, it does not allow me to pass a valid URL and return a shortened URL
+- As an anonymous user, it does allow me to use the shortened URL to access the longer URL
 
 **Version 3**
 - As a signed in user, I can see how many times the shortened URLs have been accessed

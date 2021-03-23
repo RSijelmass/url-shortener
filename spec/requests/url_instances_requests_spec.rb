@@ -58,6 +58,7 @@ RSpec.describe UrlInstancesController, type: :request do
     it 'redirects and displays the longhand URL if a valid shorthand is given' do
       get "/short/#{given_shorthand}"
       expect(response).to have_http_status(:found)
+      expect(response).to redirect_to expected_url
     end
     it 'returns a Not Found when the shorthand does not exist' do
       non_existent_shorthand = "some-non-existent-shorthand"
@@ -68,6 +69,7 @@ RSpec.describe UrlInstancesController, type: :request do
 
   describe "An anonymous user" do
     let(:user) { nil }
+    let(:different_user) { User.create(id: 9876, username: "theOtherUser") }
     before do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
     end
@@ -77,9 +79,26 @@ RSpec.describe UrlInstancesController, type: :request do
         expect { post '/url_instances', params: { url_instance: { input_url: valid_url } } }
           .to change(UrlInstance, :count).by(0)
       end
-      it 'returns a redirect when attempting to create a URL instance' do
+      it 'returns a redirect to home when attempting to create a URL instance' do
         post '/url_instances', params: { url_instance: { input_url: valid_url } }
         expect(response).to have_http_status(:found)
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    describe "GET /short/:shorthand" do
+      let(:given_shorthand) { "some-shorthand" }
+      let(:expected_url) { "https://someExternalUrl.com" }
+
+      before do
+        url_instance = different_user.url_instances.new(longhand: expected_url, shorthand: given_shorthand)
+        url_instance.save
+      end
+
+      it 'redirects and displays the longhand URL if a valid shorthand is given' do
+        get "/short/#{given_shorthand}"
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to expected_url
       end
     end
   end
