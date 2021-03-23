@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UrlInstancesController, type: :request do
   let(:valid_url) { "https://someLongHand.com" }
   let(:expected_shorthand) { "someShorthand" }
-  let(:user) { User.create }
+  let(:user) { User.create(id: 1234, username: "someUser") }
   before do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
     UrlParser.stub(:is_valid_url?).and_return(true)
@@ -50,8 +50,12 @@ RSpec.describe UrlInstancesController, type: :request do
     let(:given_shorthand) { "some-shorthand" }
     let(:expected_url) { "https://someExternalUrl.com" }
 
+    before do
+      url_instance = user.url_instances.new(longhand: expected_url, shorthand: given_shorthand)
+      url_instance.save
+    end
+    
     it 'redirects and displays the longhand URL if a valid shorthand is given' do
-      UrlInstance.create(longhand: expected_url, shorthand: given_shorthand)
       get "/short/#{given_shorthand}"
       expect(response).to have_http_status(:found)
     end

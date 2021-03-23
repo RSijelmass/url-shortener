@@ -27,7 +27,7 @@ class UrlInstancesController < ApplicationController
 
     shorthand_url = UrlParser.create_shorthand
 
-    @url_instance = UrlInstance.new(longhand: input_url, shorthand: shorthand_url)
+    @url_instance = current_user.url_instances.new(longhand: input_url, shorthand: shorthand_url)
     if @url_instance.save
       redirect_to @url_instance
     else
