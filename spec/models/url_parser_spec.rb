@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe UrlParser do
   context 'create_shorthand_for_url' do
-    let(:expected_shorthand) { "abcd1234" }
+    let(:created_random_string) { "abc123" }
     before do
-      allow(SecureRandom).to receive(:alphanumeric).and_return(expected_shorthand)
+      allow(SecureRandom).to receive(:alphanumeric).and_return(created_random_string)
     end
 
     it 'returns a shorthand version for a valid URL' do
+      expected_shorthand = created_random_string[0...described_class::SHORTHAND_LIMIT]
       expect(UrlParser.create_shorthand).to eq expected_shorthand
     end
   end
