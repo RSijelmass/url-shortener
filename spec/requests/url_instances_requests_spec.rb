@@ -57,9 +57,8 @@ RSpec.describe UrlInstancesController, type: :request do
   describe "GET /short/:shorthand" do
     let(:given_shorthand) { "some-shorthand" }
     let(:expected_url) { "https://someExternalUrl.com" }
-
+    let(:url_instance) { user.url_instances.new(longhand: expected_url, shorthand: given_shorthand) }
     before do
-      url_instance = user.url_instances.new(longhand: expected_url, shorthand: given_shorthand)
       url_instance.save
     end
 
@@ -67,6 +66,12 @@ RSpec.describe UrlInstancesController, type: :request do
       get "/short/#{given_shorthand}"
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to expected_url
+    end
+    it 'increases the count on the url instance when fetched' do
+      expect do
+        get "/short/#{given_shorthand}"
+        url_instance.reload
+      end.to change(url_instance, :count).from(0).to(1)
     end
     it 'returns a Not Found when the shorthand does not exist' do
       non_existent_shorthand = "some-non-existent-shorthand"

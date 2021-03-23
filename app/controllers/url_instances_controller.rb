@@ -11,11 +11,15 @@ class UrlInstancesController < ApplicationController
   end
 
   def redirect_from_short
-    @url_instance = UrlInstance.find_by(shorthand: params[:shorthand])
+    @url_instance = UrlInstance.find_by_shorthand(params[:shorthand])
+
     if @url_instance.nil?
       render body: "No URL available with shorthand #{params[:shorthand]}", :status => :not_found
       return
     end
+
+    @url_instance.count+= 1
+    @url_instance.save
 
     redirect_to @url_instance.longhand
   end
