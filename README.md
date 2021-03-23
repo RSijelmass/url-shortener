@@ -61,7 +61,27 @@ GET http://localhost:3000/short/<SHORTHAND>
 This should redirect you to the longhand URL, if the shorthand has been stored in our database.
 
 ## Run the Tests
-~TODO~
+1. Run All Tests
+To run the full test suite, run:
+```
+rspec
+```
+
+2. Run One File
+If you'd rather run all tests within one file, run:
+```
+$ rspec <FULL_FILE_PATH>
+Example:
+$ rspec spec/models/url_parser_spec.rb
+```
+
+3. Run One Test
+Finally you can also run one test (or group of tests) in one file by adding the line the test is in:
+```
+$ rspec <FULL_FILE_PATH>:<LINE_NUMBER>
+Example:
+$ rspec spec/models/url_parser_spec.rb:10
+```
 
 ## User Stories
 Over multiple iterations, I attempt to create a minimal viable product to improve over. The layout of the different product versions is as follows:
