@@ -54,7 +54,7 @@ RSpec.describe UrlInstancesController, type: :request do
       url_instance = user.url_instances.new(longhand: expected_url, shorthand: given_shorthand)
       url_instance.save
     end
-    
+
     it 'redirects and displays the longhand URL if a valid shorthand is given' do
       get "/short/#{given_shorthand}"
       expect(response).to have_http_status(:found)
@@ -63,6 +63,24 @@ RSpec.describe UrlInstancesController, type: :request do
       non_existent_shorthand = "some-non-existent-shorthand"
       get "/short/#{non_existent_shorthand}"
       expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe "An anonymous user" do
+    let(:user) { nil }
+    before do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+    end
+
+    describe "POST /url_instances" do
+      it 'does not store the url instance' do
+        expect { post '/url_instances', params: { url_instance: { input_url: valid_url } } }
+          .to change(UrlInstance, :count).by(0)
+      end
+      it 'returns a redirect when attempting to create a URL instance' do
+        post '/url_instances', params: { url_instance: { input_url: valid_url } }
+        expect(response).to have_http_status(:found)
+      end
     end
   end
 end
