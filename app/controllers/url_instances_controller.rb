@@ -26,23 +26,22 @@ class UrlInstancesController < ApplicationController
 
   def create
     input_url = url_instance_params[:longhand]
-
-    unless UrlParser.is_valid_url? input_url
-      render body: "Failed to store URL: #{input_url} is not valid", :status => :bad_request
-      return
-    end
-
     shorthand_url = UrlParser.create_shorthand
 
+    return unless assert_valid_url(input_url)
+
     @url_instance = current_user.url_instances.new(longhand: input_url, shorthand: shorthand_url)
-    if @url_instance.save
-      redirect_to @url_instance
-    else
-      render body: "Failed to store UrlInstance", :status => :internal_server_error
-    end
+    @url_instance.save ? redirect_to(@url_instance) : redirect_to(url_instances_url, notice: "Failed to store URL instance.")
   end
 
   private
+
+  def assert_valid_url(input_url)
+    return true if UrlParser.is_valid_url? input_url
+
+    redirect_to url_instances_url, notice: "Failed to store URL: #{input_url} is not valid"
+    return false
+  end
 
   def url_instance_params
     params.require(:url_instance).permit(:longhand)

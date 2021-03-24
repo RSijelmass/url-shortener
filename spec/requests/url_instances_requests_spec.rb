@@ -40,17 +40,28 @@ RSpec.describe UrlInstancesController, type: :request do
         expect { post '/url_instances', params: { url_instance: { longhand: invalid_url } } }
           .to change(UrlInstance, :count).by(0)
       end
-      it 'returns an error when an invalid URL is given' do
+      it 'redirects back to #index with a notice when an invalid URL is given' do
         post '/url_instances', params: { url_instance: { longhand: invalid_url } }
-        expect(response).to have_http_status(:bad_request)
+
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to url_instances_url
+        flash[:notice].should_not be_nil
       end
     end
 
-    it 'returns an error when we failed to store the URL' do
-      #TODO
+    it 'redirects back to #index with a notice when we failed to store the URL' do
+      UrlInstance.any_instance.stub(:save).and_return(false)
+      post '/url_instances', params: { url_instance: { longhand: valid_url } }
+
+      expect(response).to redirect_to url_instances_url
+      flash[:notice].should_not be_nil
     end
-    it 'returns an error when we fail to create a shorthand' do
-      #TODO
+    it 'redirects back to #index with a notice when we fail to create a shorthand' do
+      UrlInstance.any_instance.stub(:save).and_return(false)
+      post '/url_instances', params: { url_instance: { longhand: valid_url } }
+
+      expect(response).to redirect_to url_instances_url
+      flash[:notice].should_not be_nil
     end
   end
 
