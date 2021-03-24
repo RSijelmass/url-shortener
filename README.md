@@ -22,43 +22,45 @@ With this, there are a few unknowns and therefore I have taken the  liberty to m
 - For future iterations of the implementation a many-to-many relationship could be considered, but would come with drawbacks. If we want to give flexibility on how to shorten the URLs, a user no longer has control on how to do the shortening.
 
 2. **Authentication**
-- Users must be logged in to create shortened URLs.
+- Users must be logged in to create shortened URLs and have an overview of their stored URLs.
 - Users do not need to be logged in to access a shortened URL.
 
 3. **Validation**
 - When passing a non-valid URL (e.g. a string that is not in correct URL format) it will error early and not store the URL.
 - When passing a valid URL that is faulty (e.g. a string that is in correct URL format but does not exist), we will store the URL. The application will currently not check the existence or health of these URLs.
 
-## Run the Application
-#### Starting the App
-To start the app, you need to run:
+## Using the Application
+1. **Starting the app**.
+- To start the app locally, run from the command line:
 ```
 bin/rails server
 ```
-
 This will point to `localhost:3000`.
+- If you'd like to access a deployed version of the app, go to [this Heroku app](https://not-bitly-123.herokuapp.com/).
 
-#### Creating a new URL instance
-If you want to create a new URL with a shortened alias, make the request with body:
-```
-Request
-POST http://localhost:3000/url_instances
+2. **Sign up / Sign in**.
+- If you have no user registered, you need to first `Sign Up` (`/signup`) a user. There is a link from the home page to do so.
+- If you have a user registered, you can `Log in` (`/login`) as a user. There is a link from the home page to do so.
 
-Body
-{
-    "input_url": <DESIRED_URL_TO_STORE>
-}
-```
+3. **Seeing your URL instances**.
 
-This will come back with URL information including your shorthand.
+  On successful login, there is a link to `See all URLs` (or `/url_instances`).
+  Here you have an overview of all your URLs, their shorthands, and how often these shorthands have been used.
+  Clicking on their ID will show you specific information of that URL instance (`/url_instances/{urlInstanceId}`)
 
-#### Using the shorthand
+4. **Creating a new URL instance** Below the overview of URLs, you can create a new URL instance.
+
+5. **Accessing your shorter URL** Every URL has a shorthand attached to it.
+Any user can use these shortened URLs to be redirected to the original URL.
+Using any of these shortened URLs works as:
+
+6. **Using the shorthand**
 If you would like to use a shorthand, this can be done by running the request:
 ```
-GET http://localhost:3000/short/<SHORTHAND>
+GET {appHost}/short/{shorthand}
 ```
-
-This should redirect you to the longhand URL, if the shorthand has been stored in our database.
+If the shorthand exists, it will redirect you and increase the count of the shorthand used.
+If the shorthand does not exist, a `404` will be returned.
 
 ## Run the Tests
 1. Run All Tests
