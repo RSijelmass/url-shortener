@@ -26,7 +26,7 @@ RSpec.describe UrlInstancesController, type: :request do
   describe "POST /url_instances" do
     context 'with valid URL' do
       it 'stores a UrlInstance if it is considered a valid URL' do
-        expect { post '/url_instances', params: { url_instance: { input_url: valid_url } } }.to change(UrlInstance, :count).by(1)
+        expect { post '/url_instances', params: { url_instance: { longhand: valid_url } } }.to change(UrlInstance, :count).by(1)
       end
     end
 
@@ -37,11 +37,11 @@ RSpec.describe UrlInstancesController, type: :request do
       end
 
       it 'does not store the url instance' do
-        expect { post '/url_instances', params: { url_instance: { input_url: invalid_url } } }
+        expect { post '/url_instances', params: { url_instance: { longhand: invalid_url } } }
           .to change(UrlInstance, :count).by(0)
       end
       it 'returns an error when an invalid URL is given' do
-        post '/url_instances', params: { url_instance: { input_url: invalid_url } }
+        post '/url_instances', params: { url_instance: { longhand: invalid_url } }
         expect(response).to have_http_status(:bad_request)
       end
     end
@@ -88,11 +88,11 @@ RSpec.describe UrlInstancesController, type: :request do
 
     describe "POST /url_instances" do
       it 'does not store the url instance' do
-        expect { post '/url_instances', params: { url_instance: { input_url: valid_url } } }
+        expect { post '/url_instances', params: { url_instance: { longhand: valid_url } } }
           .to change(UrlInstance, :count).by(0)
       end
       it 'returns a redirect to home when attempting to create a URL instance' do
-        post '/url_instances', params: { url_instance: { input_url: valid_url } }
+        post '/url_instances', params: { url_instance: { longhand: valid_url } }
         expect(response).to have_http_status(:found)
         expect(response).to redirect_to root_path
       end
@@ -100,7 +100,7 @@ RSpec.describe UrlInstancesController, type: :request do
 
     describe "GET /url_instances" do
       it 'returns a redirect to home when attempting to get URL instances' do
-        post '/url_instances', params: { url_instance: { input_url: valid_url } }
+        post '/url_instances', params: { url_instance: { longhand: valid_url } }
         expect(response).to have_http_status(:found)
         expect(response).to redirect_to root_path
       end
