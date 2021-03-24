@@ -2,6 +2,7 @@
 
 <% @url_instances.each do |url_instance| %>
   <tr>
+    <td><%= link_to url_instance.id, url_instance_path(url_instance) %>
     <td><b>URL:</b> <%= url_instance.longhand %></td>
     <td><b>shorthand:</b> <%= url_instance.shorthand %></td>
     <td><b>count:</b> <%= url_instance.count %></td><br>
@@ -9,7 +10,7 @@
 <% end %>
 
 <p>
-  To access any of these URLs through the shorthand, use the endpoint: <i>{{baseUrl}}/short/{{shorthand}}</i> <br>
+  To access any of these URLs through the shorthand, use the endpoint: <i>https://not-bitly-123.herokuapp.com/short/{{shorthand}}</i> <br>
   Any user can access this endpoint.
 </p>
 
@@ -20,3 +21,5 @@
     <%= form.submit %>
   </p>
 <% end %>
+
+<%= link_to 'Log Out', logout_path %>
